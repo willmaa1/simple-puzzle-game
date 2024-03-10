@@ -1,0 +1,61 @@
+html {
+  font-size: large; 
+  scrollbar-width: none;
+  background-color: gray;
+}
+
+body {
+  margin: 0;
+}
+
+#container {
+  height:100vh;
+  width:100vw;
+  background-color: black;
+}
+
+#playarea {
+  position:absolute;
+  /* top:0;
+  left:0;
+  bottom:0;
+  right:0; */
+  height:98%;
+  width:98%;
+  /* max-heightx   90%; */
+  margin: 1vh 1vw 1vh 1vw;
+  border-radius: 2%;
+  overflow: hidden;
+}
+
+#background {
+  position:absolute;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  background-color: lightseagreen;
+  background-repeat:round;
+  background-size:cover;
+  /* filter:blur(15px); */
+}
+
+#pieces {
+  position:absolute;
+  top:0;
+  left:0;
+  height:100%;
+  width:100%;
+  /* Having blur here instead of on #background prevents the parent backgroundcolor from bleeding in.
+  Blur does not look that good. Calculating dominant colour would be preferrable.*/
+  backdrop-filter:blur(15px);
+}
+
+.piece {
+  position: absolute;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  user-select: none;
+  /* height:10%;
+  width:10%; */
+}
