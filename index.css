@@ -34,7 +34,7 @@ body {
   left:0;
   height:100%;
   width:100%;
-  background-color: lightseagreen;
+  /* background-color: lightseagreen; */
   background-repeat:round;
   background-size:cover;
   /* filter:blur(15px); */

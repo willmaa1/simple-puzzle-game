@@ -1,5 +1,5 @@
-import { getRandomCustomImage, loadCustomImages } from "./imgloader.js";
-import { createNewPuzzle, currentPuzzle } from "./puzzlepiece.js";
+import { getRandomCustomImage, loadCustomImages } from "./js/imgloader.js";
+import { createNewPuzzle, currentPuzzle } from "./js/puzzlepiece.js";
 
 createNewPuzzle(3,3);
 loadCustomImages();

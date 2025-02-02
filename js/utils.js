@@ -1,4 +1,4 @@
-export const assetsPath = "assets"
+export const assetsPath = "../assets"
 
 export function pathJoin(parts, sep){
   var separator = sep || '/';

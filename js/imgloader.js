@@ -2,7 +2,7 @@ let customImages = [];
 
 export function loadCustomImages() {
   var xhr = new XMLHttpRequest();
-  xhr.open("GET", "/custompuzzles", true);
+  xhr.open("GET", "../custompuzzles", true);
   xhr.responseType = 'document';
   xhr.onload = () => {
     customImages = [];
