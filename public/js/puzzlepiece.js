@@ -302,7 +302,7 @@ class Puzzle {
         piece.elem = clippedImage;
         clippedImage.onmouseenter = (e) => {
           allowedPieces.push(piece);
-          console.log(allowedPieces);
+          // console.log(allowedPieces);
         }
         clippedImage.onmouseleave = (e) => {
           for (let i = 0; i < allowedPieces.length; i++) {
@@ -311,7 +311,7 @@ class Puzzle {
               break;
             }
           }
-          console.log(allowedPieces);
+          // console.log(allowedPieces);
         }
       }
     }
@@ -407,7 +407,7 @@ document.addEventListener("mouseup", (e) => {
   // console.log("u2p",movingPiece);
   if (e.button === 0) {
     if (movingPiece != null) {
-      console.log(movingPiece.row, movingPiece.column);
+      // console.log(movingPiece.row, movingPiece.column);
       
       const hh = removePx(movingPiece.elem.style.height);
       const ww = removePx(movingPiece.elem.style.width);
