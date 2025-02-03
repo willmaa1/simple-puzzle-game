@@ -1,18 +1,34 @@
-# Simple puzzle
+# Simple puzzle game
 
-Simple puzzle game with pure JavaScript. Uses canvas to crop images for each piece.
+Simple puzzle game with pure JavaScript. Uses canvas to draw and crop images for each piece.
 
-## Usage
+Node.js with express used for serving files.
 
-Use any server to host the files. CORS prevents from just opening index.html directly in a browser.
+## Installation
+
+`npm install`
+
+## Running
+
+`npm start`
 
 ## Playing
 
-The pieces will snap to connect to each other and connected pieces move together. Sound cue is played when snapping.
+Open `localhost:8000` with some browser and enjoy!
 
-Note! Currently snapping is only checked for the piece you are moving, not any of the connected pieces.
+The pieces will snap to connect when released near each other. Connected pieces move together and a sound cue is played when snapping.
+
+Add custom images to the `custompuzzles` folder. Refresh the page to update the available custom puzzles. Press **r** to load a random image form the custompuzzle folder. The number of pieces is also randomized.
+
+Press **o** while playing to open the image in a new tab.
 
 https://github.com/user-attachments/assets/650a9852-6cf8-4c1a-9526-26b7afbcedd6
+
+## Limitations
+Snapping is only checked for the piece you are moving, not any of the connected pieces.
+
+Pieceas appear visually nice but are actually rectangles, meaning they can be dragged from their transparent parts.
+
 
 ## Acknowledgements
 

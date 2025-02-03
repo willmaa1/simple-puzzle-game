@@ -1,0 +1,14 @@
+{
+  "name": "simple-puzzle-game",
+  "version": "1.0.0",
+  "description": "Simple puzzle game with pure JavaScript. Uses canvas to crop images for each piece.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "Alex Willman",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
