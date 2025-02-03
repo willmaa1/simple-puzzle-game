@@ -2,8 +2,7 @@
 import { assetsPath, pathJoin } from "./utils.js";
 import { Point, PieceQubicBezierPath } from "./bezier.js";
 import { playSnap } from "./audio.js";
-
-const defaultImg = "bubbles.jpg";
+import { defaultImg } from "./imgloader.js"
 
 class Piece {
   // up, right, down, left

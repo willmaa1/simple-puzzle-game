@@ -1,5 +1,7 @@
 let customImages = [];
 
+export const defaultImg = "Balloons.jpg";
+
 export function loadCustomImages() {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "../custompuzzles", true);
