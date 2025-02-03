@@ -12,10 +12,7 @@ The pieces will snap to connect to each other and connected pieces move together
 
 Note! Currently snapping is only checked for the piece you are moving, not any of the connected pieces.
 
-<video controls muted loop>
-  <source src="puzzledemo.mp4" type="video/mp4">
-</video>
-
+https://github.com/user-attachments/assets/650a9852-6cf8-4c1a-9526-26b7afbcedd6
 
 ## Acknowledgements
 
