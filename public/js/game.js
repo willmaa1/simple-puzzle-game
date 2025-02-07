@@ -39,7 +39,10 @@ class Game {
 
   addPieces = () => {
     const shuffledPieces = this.currentPuzzle.pieces.flat(1);
-    shuffledPieces.sort((a,b)=> { return Math.random()-0.5; }); // More randomness...
+
+    // Randomize the location of by ordering the pieces randomly
+    // and then for each piece swapping its position with a random piece.
+    shuffledPieces.sort((a,b)=> { return Math.random()-0.5; });
     for (const piece of shuffledPieces) {
       const swapi = Math.floor(Math.random()*shuffledPieces.length);
       const otherpiece = shuffledPieces[swapi];
@@ -50,8 +53,14 @@ class Game {
       piece.elem.style.left = tempLeft;
       piece.elem.style.top = tempTop;
     }
+
     for (const piece of shuffledPieces) {
+      // Add pieces to screen
       document.getElementById("pieces").appendChild(piece.elem);
+      piece.elem.style.left = `${piece.elem.offsetLeft}px`;
+      piece.elem.style.top = `${piece.elem.offsetTop}px`;
+
+      // Add event listeners for each piece
       piece.elem.onmouseenter = (e) => {
         this.allowedPieces.push(piece);
         // console.log(this.allowedPieces);
@@ -65,10 +74,6 @@ class Game {
         }
         // console.log(this.allowedPieces);
       }
-    }
-    for (const piece of shuffledPieces) {
-      piece.elem.style.left = `${piece.elem.offsetLeft}px`;
-      piece.elem.style.top = `${piece.elem.offsetTop}px`;
     }
   }
   

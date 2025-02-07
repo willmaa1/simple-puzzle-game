@@ -5,7 +5,7 @@ import { Point, PieceQubicBezierPath } from "./bezier.js";
 class Piece {
   // up, right, down, left
   sides = [0, 0, 0, 0]; // -1 in // 0 = flat, 1 = out
-  elem = new Image();
+  elem = document.createElement("canvas");
   row = 0;
   column = 0;
   top = new PieceQubicBezierPath();
@@ -174,7 +174,15 @@ export class Puzzle {
     
     
     // console.log(h, ph, w, pw);
-    
+
+    // Predefine canvas for drawing image
+    const canvas = document.createElement("canvas");
+    const ctx = canvas.getContext("2d");
+    ctx.strokeStyle = "black";
+    ctx.lineWidth = 5;
+    canvas.width = w;
+    canvas.height = h;
+
     // clipPieces = () => {
     for (let r = 0; r < this.pieces.length; r++) {
       for (let c = 0; c < this.pieces[r].length; c++) {
@@ -183,10 +191,6 @@ export class Puzzle {
         const startY = r * ph;
         const startX = c * pw;
 
-        // const points = [];
-        // for (let pp = 0; pp < 11; pp++) {
-        //   points.push(new Point(Math.floor(Math.random()*pw), Math.floor(Math.random()*ph)));
-        // }
         const top = new PieceQubicBezierPath();
         const right = new PieceQubicBezierPath();
         const bottom = new PieceQubicBezierPath();
@@ -241,14 +245,10 @@ export class Puzzle {
         //   console.log(pathpart.minX(), pathpart.minY(), pathpart.maxX(), pathpart.maxY());
         // }
 
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = 5;
-        canvas.width = w;
-        canvas.height = h;
         ctx.save();
-        ctx.clearRect(minX, minY, maxWidth, maxHeight);
+        // Clear entire canvas
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        // ctx.clearRect(minX, minY, maxWidth, maxHeight);
         ctx.beginPath();
 
         ctx.moveTo(top.start.x, top.start.y);
@@ -262,33 +262,31 @@ export class Puzzle {
           }
         }
 
-        ctx.stroke(); // Not necessary! Only adds black line on the path...
-        // ctx.imageSmoothingEnabled=false;
+        ctx.stroke(); // Adds black line for edges
         ctx.closePath();
         ctx.clip();
         ctx.drawImage(this.puzImg, 0, 0);
-        // ctx.fillRect(0,0,pw,ph);
         ctx.restore();
-
-        const canvas2 = document.createElement('canvas');
+  
+        // Setting canvas width or height clears canvas so we can re-use old canvas object.
+        const canvas2 = piece.elem;
         const ctx2 = canvas2.getContext('2d');
         canvas2.width = maxWidth;
         canvas2.height = maxHeight;
 
         ctx2.drawImage(canvas, minX, minY, maxWidth, maxHeight, 0, 0, maxWidth, maxHeight);
-        
+
         const clippedImage = piece.elem;
-        clippedImage.src = canvas2.toDataURL();
+
         // console.log(minX, minY);
         // Initial offset of the pieces is 2% so they are not immediately on the border.
+        clippedImage.style.position = "absolute";
         clippedImage.style.left = `${2 + minX/(pw*this.columns)*95}%`;
         clippedImage.style.top = `${2 + minY/(ph*this.rows)*95}%`;
         // clippedImage.style.left = `${2 + (pw*c)/w*94}%`;
         // clippedImage.style.top = `${2 + (ph*r)/h*94}%`;
         clippedImage.style.width = `${maxWidth*imgElemScaler}px`;
         clippedImage.style.height = `${maxHeight*imgElemScaler}px`;
-        // clippedImage.wid
-        // piece.elem = clippedImage;
       }
     }
   }
