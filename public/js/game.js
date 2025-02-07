@@ -217,7 +217,11 @@ class Game {
         }
         
         if (isWithin && otherPiece != null) {
-          this.movingPiece.changeGroupTo(otherPiece.pieceGroup); 
+          this.movingPiece.changeGroupTo(otherPiece.pieceGroup);
+
+          for (const piece of this.movingPiece.pieceGroup.pieces) {
+            piece.elem.style.zIndex = this.zIndex;
+          }
         }
   
         this.movingPiece = null;
