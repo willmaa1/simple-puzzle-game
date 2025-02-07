@@ -7,6 +7,7 @@ export const defaultImg = "Balloons.jpg";
 const customImagePath = "/custompuzzles"
 
 export function loadCustomImages() {
+  customImages = [];
   fetch(customImagePath)
     .then((resp) => resp.json())
     .then((resp) => {
