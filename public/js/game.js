@@ -1,4 +1,4 @@
-import { playSnap } from "./audio.js";
+import { loadCustomSounds, playComplete, playSnap } from "./audio.js";
 import { defaultImg, getCustomImage, loadCustomImages, maxCustomImage } from "./imgloader.js";
 import { Puzzle } from "./puzzle.js";
 import { pathJoin, assetsPath, removePx, getAverageRBG } from "./utils.js";
@@ -18,6 +18,7 @@ export class Game {
 
   constructor(){
     loadCustomImages();
+    loadCustomSounds();
     this._addEventListeners();
     this._changePuzzle("");
   }
@@ -277,6 +278,10 @@ export class Game {
           for (const piece of this.movingPiece.pieceGroup.pieces) {
             piece.elem.style.zIndex = this.zIndex;
           }
+
+          if (this.currentPuzzle.isComplete()) {
+            playComplete();
+          }
         }
   
         this.movingPiece = null;
@@ -292,6 +297,7 @@ export class Game {
       window.open(this.currentPuzzle.puzImg.src);
     } else if (e.key === "l") {
       loadCustomImages();
+      loadCustomSounds();
     } else if (e.key === "ArrowRight") {
       this.nextCustomPuzzle();
     } else if (e.key === "ArrowLeft") {

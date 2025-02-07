@@ -18,6 +18,19 @@ app.get("/custompuzzles", (req, res) => {
   res.send(ress);
 });
 
+// Serving custom sounds
+app.use("/snap", express.static(path.join(__dirname, "/customsounds/snap")));
+app.get("/snap", (req, res) => {
+  const ress = fs.readdirSync(path.join(__dirname, "customsounds/snap"));
+  res.send(ress);
+});
+app.use("/complete", express.static(path.join(__dirname, "/customsounds/complete")));
+app.get("/complete", (req, res) => {
+  const ress = fs.readdirSync(path.join(__dirname, "customsounds/complete"));
+  res.send(ress);
+});
+
+
 app.listen(PORT, () => {
   console.log(`http://localhost:${PORT}/`);
 });

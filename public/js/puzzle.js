@@ -103,6 +103,10 @@ export class Puzzle {
     this.puzImg.src = src;
   }
 
+  isComplete = () => {
+    return this.rows * this.columns === this.pieces[0][0].pieceGroup.pieces.length;
+  }
+
   _afterLoadError = (e) => {
     console.log("oops, some error in loading the image");
   }

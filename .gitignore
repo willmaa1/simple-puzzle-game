@@ -1,4 +1,11 @@
 node_modules
 
 custompuzzles/*
+
+customsounds/*
+!customsounds/complete/
+customsounds/complete/*
+!customsounds/snap/
+customsounds/snap/*
+
 puzzledemo.mp4
