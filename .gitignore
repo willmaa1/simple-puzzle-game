@@ -1,11 +1,18 @@
 node_modules
 
+puzzledemo.mp4
+
+# Text files to enforce directory structure
 custompuzzles/*
+!custompuzzles/custom_images_here.txt
 
 customsounds/*
-!customsounds/complete/
-customsounds/complete/*
-!customsounds/snap/
-customsounds/snap/*
 
-puzzledemo.mp4
+customsounds/complete/*
+!customsounds/complete/
+!customsounds/complete/completion_sounds_here.txt
+
+customsounds/snap/*
+!customsounds/snap/
+!customsounds/snap/snap_sounds_here.txt
+
