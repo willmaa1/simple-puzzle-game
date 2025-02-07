@@ -113,16 +113,47 @@ export class PieceQubicBezierPath {
       this.qbparts[i][1].rotateRight();
     }
   }
-  _minmax = (min = true, x = true) => {
-    // Current implementation WILL give too high and low values because the control point of bezier curve is not reached.
+  _minmaxNaive = (min = true, x = true) => {
+    // Uses the control points as the bounding box.
+    // This WILL give too high and low values when the control point of bezier curve is not reached.
     let res = x ? this.start.x : this.start.y;
     for (let i = 0; i < this.qbparts.length; i++) {
-      let next = x ? this.qbparts[i][1].x : this.qbparts[i][1].y;
+      let next = x ? this.qbparts[i][0].x : this.qbparts[i][0].y;
       res = min ? Math.min(res, next) : Math.max(res, next);
-      next = x ? this.qbparts[i][0].x : this.qbparts[i][0].y;
+      next = x ? this.qbparts[i][1].x : this.qbparts[i][1].y;
       res = min ? Math.min(res, next) : Math.max(res, next);
     }
-    return res
+    return res;
+  }
+
+  _minmax = (min = true, x = true) => {
+    let minx = Infinity;
+    let miny = Infinity;
+    let maxx = 0;
+    let maxy = 0;
+    let res;
+    for (let i = 0; i < this.qbparts.length; i++) {
+      if (i === 0) {
+        res = quadraticCurveBoundary(this.start.x, this.start.y,
+                                    this.qbparts[0][0].x, this.qbparts[0][0].y,
+                                    this.qbparts[0][1].x, this.qbparts[0][1].y);
+      } else {
+        res = quadraticCurveBoundary(this.qbparts[i-1][1].x, this.qbparts[i-1][1].y,
+                                    this.qbparts[i][0].x, this.qbparts[i][0].y,
+                                    this.qbparts[i][1].x, this.qbparts[i][1].y);
+      }
+      minx = Math.min(minx, res.x);
+      miny = Math.min(miny, res.y);
+      maxx = Math.max(maxx, res.x + res.width);
+      maxy = Math.max(maxy, res.y + res.height);
+    }
+
+    // Add one pixel padding
+    if (x) {
+      return min ? minx -1 : maxx +1;
+    } else {
+      return min ? miny -1 : maxy +1;
+    }
   }
 
   maxX = () => {
@@ -159,3 +190,41 @@ export class PieceQubicBezierPath {
 //   {cx1:62, cy1:-5, cx2:60,cy2:0,  ex:63, ey:5},   // right neck
 //   {cx1:63, cy1:5,  cx2:65,cy2:15, ex:100,ey:0},   // right shoulder
 // ];
+
+// Modified code for approximating bezier curve boundary from
+// https://stackoverflow.com/questions/18141190/how-to-calculate-width-height-and-position-of-bezier-curve/20937454#20937454
+function quadraticCurveBoundary(ax, ay, bx, by, cx, cy) {
+  let tobx = bx - ax;
+  let toby = by - ay;
+  let tocx = cx - bx;
+  let tocy = cy - by;
+
+  let steps = 40;
+  let precision = 1 / steps;    // precission
+
+  let d, px, py, qx, qy, x, y, toqx, toqy;
+  let minx = Infinity;
+  let miny = Infinity;
+  let maxx = 0;
+  let maxy = 0;
+
+  for (let i = 0; i < steps; i++) {
+    d = i * precision;
+    px = ax + d * tobx;
+    py = ay + d * toby;
+    qx = bx + d * tocx;
+    qy = by + d * tocy;
+
+    toqx = qx - px;
+    toqy = qy - py;
+
+    x = px + d * toqx;
+    y = py + d * toqy;
+
+    minx = Math.min(minx, x);
+    miny = Math.min(miny, y);
+    maxx = Math.max(maxx, x);
+    maxy = Math.max(maxy, y);
+  }
+  return {x: Math.round(minx), y: Math.round(miny), width: Math.round(maxx - minx), height: Math.round(maxy - miny)};
+}
