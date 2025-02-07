@@ -1,7 +1,7 @@
 import { playSnap } from "./audio.js";
 import { defaultImg, getRandomCustomImage, loadCustomImages } from "./imgloader.js";
 import { Puzzle } from "./puzzle.js";
-import { pathJoin, assetsPath, removePx } from "./utils.js";
+import { pathJoin, assetsPath, removePx, getAverageRBG } from "./utils.js";
 
 class Game {
   currentPuzzle;
@@ -31,10 +31,12 @@ class Game {
     if (src == "") {
       src = pathJoin([assetsPath, defaultImg]);
     }
-    this.currentPuzzle = new Puzzle(rows, columns, piecesElem.clientWidth, piecesElem.clientHeight, src, this.addPieces)
+    this.currentPuzzle = new Puzzle(rows, columns, piecesElem.clientWidth, piecesElem.clientHeight, src, this.onPuzzleReady)
+  }
 
-    // this.addPieces();
+  onPuzzleReady = () => {
     this.showPuzzleBackground();
+    this.addPieces();
   }
 
   addPieces = () => {
@@ -79,7 +81,8 @@ class Game {
   
   showPuzzleBackground = () => {
     const bg = document.getElementById("background");
-    bg.style.backgroundImage = `url("${this.currentPuzzle.puzImg.src}")`;
+    const rgb = getAverageRBG(this.currentPuzzle.puzImg);
+    bg.style.backgroundColor = `rgba(${rgb[0]},${rgb[1]},${rgb[2]}, 0.5)`;
   }
 
   addEventListeners = () => {
