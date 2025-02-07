@@ -15,7 +15,7 @@ class Game {
   allowedPieces = [];
 
   constructor(){
-    this.addEventListeners();
+    this._addEventListeners();
   }
 
   changePuzzle = (src = "") => {
@@ -31,15 +31,15 @@ class Game {
     if (src == "") {
       src = pathJoin([assetsPath, defaultImg]);
     }
-    this.currentPuzzle = new Puzzle(rows, columns, piecesElem.clientWidth, piecesElem.clientHeight, src, this.onPuzzleReady)
+    this.currentPuzzle = new Puzzle(rows, columns, piecesElem.clientWidth, piecesElem.clientHeight, src, this._onPuzzleReady)
   }
 
-  onPuzzleReady = () => {
-    this.showPuzzleBackground();
-    this.addPieces();
+  _onPuzzleReady = () => {
+    this._showPuzzleBackground();
+    this._addPieces();
   }
 
-  addPieces = () => {
+  _addPieces = () => {
     const shuffledPieces = this.currentPuzzle.pieces.flat(1);
 
     // Randomize the location of by ordering the pieces randomly
@@ -79,25 +79,27 @@ class Game {
     }
   }
   
-  showPuzzleBackground = () => {
+  _showPuzzleBackground = () => {
     const bg = document.getElementById("background");
     const rgb = getAverageRBG(this.currentPuzzle.puzImg);
     bg.style.backgroundColor = `rgba(${rgb[0]},${rgb[1]},${rgb[2]}, 0.5)`;
   }
 
-  addEventListeners = () => {
-    document.addEventListener("mousedown", this.mousedownListener);
-    document.addEventListener("mousemove", this.mousemoveListener);
-    document.addEventListener("mouseup", this.mouseupListener);
+  _addEventListeners = () => {
+    document.addEventListener("mousedown", this._mouseDownListener);
+    document.addEventListener("mousemove", this._mousemoveListener);
+    document.addEventListener("mouseup", this._mouseupListener);
+    document.addEventListener("keydown", this._keyDownListener);
   }
 
-  removeEventListeners = () => {
-    document.removeEventListener("mousedown", this.mousedownListener);
-    document.removeEventListener("mousemove", this.mousemoveListener);
-    document.removeEventListener("mouseup", this.mouseupListener);
+  _removeEventListeners = () => {
+    document.removeEventListener("mousedown", this._mouseDownListener);
+    document.removeEventListener("mousemove", this._mousemoveListener);
+    document.removeEventListener("mouseup", this._mouseupListener);
+    document.removeEventListener("keydown", this._keyDownListener);
   }
 
-  mousedownListener = (e) => {
+  _mouseDownListener = (e) => {
     e.preventDefault();
     // Right click
     if (e.button === 0) {
@@ -116,7 +118,7 @@ class Game {
     // console.log("mdown",movingPiece);
   }
 
-  mousemoveListener = (e) => {
+  _mousemoveListener = (e) => {
     if (this.movingPiece != null) {
       const xend = e.clientX;
       const yend = e.clientY;
@@ -144,7 +146,7 @@ class Game {
     }
   }
 
-  mouseupListener = (e) => {
+  _mouseupListener = (e) => {
     // Right click
     // console.log("u2p",movingPiece);
     if (e.button === 0) {
@@ -222,18 +224,17 @@ class Game {
       }
     }
   }
+
+  _keyDownListener = (e) => {
+    // Use "r" to fetch a new custom puzzle and "o" to open current image in new tab
+    if (e.key === "r") {
+      game.changePuzzle(getRandomCustomImage());
+    } else if (e.key === "o") {
+      window.open(game.currentPuzzle.puzImg.src);
+    } else if (e.key === "l") {
+      loadCustomImages();
+    }
+  }
 }
 
 export const game = new Game();
-
-
-// Use "r" to fetch a new custom puzzle and "o" to open current image in new tab
-document.addEventListener("keydown", (e) => {
-  if (e.key === "r") {
-    game.changePuzzle(getRandomCustomImage());
-  } else if (e.key === "o") {
-    window.open(game.currentPuzzle.puzImg.src);
-  } else if (e.key === "l") {
-    loadCustomImages();
-  }
-});
