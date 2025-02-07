@@ -85,6 +85,7 @@ class PieceGroup {
 }
 
 export class Puzzle {
+  pieceMultiplier = 1;
   rows = 10;
   columns = 10;
   pieces = [];
@@ -92,10 +93,8 @@ export class Puzzle {
   containerWidth = 1920;
   containerHeight = 1080;
   onready;
-  constructor(rows, columns, containerWidth, containerHeight, src, onready) {
-    this.rows = rows;
-    this.columns = columns;
-    this._createPieces();
+  constructor(pieceMultiplier, containerWidth, containerHeight, src, onready) {
+    this.pieceMultiplier = pieceMultiplier;
     this.containerWidth = containerWidth;
     this.containerHeight = containerHeight;
     this.onready = onready;
@@ -109,10 +108,21 @@ export class Puzzle {
   }
 
   _afterLoad = (e) => {
+    this._calculateDimensions();
+    this._createPieces();
     this._cutPieces();
     if (typeof this.onready === "function") {
       this.onready();
     }
+  }
+
+  _calculateDimensions = () => {
+    const h = this.puzImg.naturalHeight;
+    const w = this.puzImg.naturalWidth;
+    const rowMultiplier = Math.sqrt(h / w);
+    this.rows = Math.floor(2 + (this.pieceMultiplier*0.8 + Math.random()*0.2) * rowMultiplier);
+    this.columns = Math.floor(2 + (this.pieceMultiplier*0.8 + Math.random()*0.2) / rowMultiplier);
+    console.log("Rows:", this.rows, "Columns:", this.columns, "Total pieces:", this.rows * this.columns);
   }
 
   _createPieces = () => {

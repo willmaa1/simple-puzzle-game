@@ -1,9 +1,9 @@
 import { playSnap } from "./audio.js";
-import { defaultImg, getRandomCustomImage, loadCustomImages } from "./imgloader.js";
+import { defaultImg, getCustomImage, loadCustomImages, maxCustomImage } from "./imgloader.js";
 import { Puzzle } from "./puzzle.js";
 import { pathJoin, assetsPath, removePx, getAverageRBG } from "./utils.js";
 
-class Game {
+export class Game {
   currentPuzzle;
   // Variables for handling piece movement
   xStart = 0;
@@ -13,16 +13,53 @@ class Game {
   movingPiece = null;
   zIndex = 0;
   allowedPieces = [];
+  customImage = -1;
+  pieceMultiplier = 1;
 
   constructor(){
+    loadCustomImages();
     this._addEventListeners();
+    this._changePuzzle("");
   }
 
-  changePuzzle = (src = "") => {
-    const size = [1.5,2,3][Math.floor(Math.random()*3)];
-    const columns = Math.floor((3 + Math.floor(Math.random()))*size);
-    const rows = Math.floor((3 + Math.floor(Math.random()))*size);
+  _customPuzzle = () => {
+    let custImg = getCustomImage(this.customImage);
+    this.customImage = custImg.index;
+    this._changePuzzle(custImg.src);
+  }
 
+  randCustomPuzzle = () => {
+    this.customImage = -1;
+    this._customPuzzle();
+  }
+
+  nextCustomPuzzle = () => {
+    this.customImage = this.customImage + 1;
+    if (this.customImage > maxCustomImage()) {
+      this.customImage = 0;
+    }
+    this._customPuzzle();
+  }
+
+  prevCustomPuzzle = () => {
+    this.customImage = (this.customImage - 1);
+    if (this.customImage < 0) {
+      this.customImage = maxCustomImage();
+    }
+    this._customPuzzle();
+  }
+
+  increasePieces = () => {
+    this.pieceMultiplier = Math.min(30, this.pieceMultiplier + 1);
+    this._changePuzzle(this.currentPuzzle.puzImg.src);
+  }
+
+  decreasePieces = () => {
+    this.pieceMultiplier = Math.max(1, this.pieceMultiplier - 1);
+    this._changePuzzle(this.currentPuzzle.puzImg.src);
+  }
+
+  _changePuzzle = (src = "") => {
     // Clear old pieces
     const piecesElem = document.getElementById("pieces");
     piecesElem.replaceChildren();
@@ -31,7 +68,7 @@ class Game {
     if (src == "") {
       src = pathJoin([assetsPath, defaultImg]);
     }
-    this.currentPuzzle = new Puzzle(rows, columns, piecesElem.clientWidth, piecesElem.clientHeight, src, this._onPuzzleReady)
+    this.currentPuzzle = new Puzzle(this.pieceMultiplier, piecesElem.clientWidth, piecesElem.clientHeight, src, this._onPuzzleReady)
   }
 
   _onPuzzleReady = () => {
@@ -250,13 +287,19 @@ class Game {
   _keyDownListener = (e) => {
     // Use "r" to fetch a new custom puzzle and "o" to open current image in new tab
     if (e.key === "r") {
-      game.changePuzzle(getRandomCustomImage());
+      this.randCustomPuzzle();
     } else if (e.key === "o") {
-      window.open(game.currentPuzzle.puzImg.src);
+      window.open(this.currentPuzzle.puzImg.src);
     } else if (e.key === "l") {
       loadCustomImages();
+    } else if (e.key === "ArrowRight") {
+      this.nextCustomPuzzle();
+    } else if (e.key === "ArrowLeft") {
+      this.prevCustomPuzzle();
+    } else if (e.key === "ArrowUp") {
+      this.increasePieces();
+    } else if (e.key === "ArrowDown") {
+      this.decreasePieces();
     }
   }
 }
-
-export const game = new Game();

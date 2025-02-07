@@ -18,13 +18,26 @@ Open `localhost:8000` with some browser and enjoy!
 
 The pieces will snap to connect when released near each other. Connected pieces move together and a sound cue is played when snapping.
 
-Add custom images to the `custompuzzles` folder. Press **l** to refresh the available custom images. Press **r** to load a random image from the custompuzzle folder. The number of pieces is also randomized.
-
-Press **o** while playing to open the image in a new tab.
-
-Left click to send a piece or group of pieces to the back.
 
 https://github.com/user-attachments/assets/650a9852-6cf8-4c1a-9526-26b7afbcedd6
+
+### Custom images
+
+Place your images to the `custompuzzles` folder to be able to play them.
+
+### Controls
+
+| Key | Function |
+|--|--|
+| Right click | Drag to connect pieces |
+| Left click | Send a piece to the back |
+| o | Open the image in new tab |
+| l | Refresh available custom images |
+| r | Load a random custom image |
+| RightArrow | Next custom image |
+| LeftArrow | Prev custom image |
+| UpArrow | More pieces |
+| DownArrow | Less pieces |
 
 ## Limitations
 Snapping is only checked for the piece you are moving, not any of the connected pieces.
