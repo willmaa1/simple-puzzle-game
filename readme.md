@@ -22,6 +22,8 @@ Add custom images to the `custompuzzles` folder. Press **l** to refresh the avai
 
 Press **o** while playing to open the image in a new tab.
 
+Left click to send a piece or group of pieces to the back.
+
 https://github.com/user-attachments/assets/650a9852-6cf8-4c1a-9526-26b7afbcedd6
 
 ## Limitations

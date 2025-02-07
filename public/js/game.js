@@ -76,6 +76,24 @@ class Game {
         }
         // console.log(this.allowedPieces);
       }
+      piece.elem.oncontextmenu = (e) => {
+        e.preventDefault();
+        // Send this piece backwards.
+
+        this.zIndex += 1; // Increment zIndex counter to bring pieces clicked after this to top
+
+        // Increment zIndex of all pieces to keep their ordering while
+        // making sure they are all over 0.
+        for (const row of this.currentPuzzle.pieces) {
+          for (const pie of row) {
+            pie.elem.style.zIndex = Number(pie.elem.style.zIndex) + 1;
+          }
+        }
+
+        for (const pie of piece.pieceGroup.pieces) {
+          pie.elem.style.zIndex = 0;
+        }
+      }
     }
   }
   
