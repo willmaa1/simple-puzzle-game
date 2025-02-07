@@ -26,6 +26,7 @@ export class Point {
 //https://stackoverflow.com/questions/30617132/jigsaw-puzzle-pices-using-bezier-curve
 export class PieceQubicBezierPath {
   start = new Point(-50,0);
+  length = 100;
   // qbparts = [ // This version left and right shoulders are slightly different
   //   [new Point(-5, 30), new Point(-13,5)],
   //   [new Point(-10, 0), new Point(-12,-5)],
@@ -169,10 +170,9 @@ export class PieceQubicBezierPath {
     return this._minmax(true, false);
   }
 
-  setLength = (length = 100) => {
-    // Assume the length has not been changed and is still 100
-    const lengthCurrent = 100;
-    const lengthChange = length/lengthCurrent;
+  setLength = (length) => {
+    const lengthChange = length/this.length;
+    this.length = length;
     this.start.scale(lengthChange);
     for (let i = 0; i < this.qbparts.length; i++) {
       this.qbparts[i][0].scale(lengthChange);
